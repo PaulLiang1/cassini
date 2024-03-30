@@ -70,7 +70,9 @@ def do_watch(printer, interval=5, broadcast=None):
             printers = SaturnPrinter.find_printers(broadcast=broadcast)
             if len(printers) > 0:
                 status = printers[0].status()
-                pct = status['currentLayer'] / status['totalLayers']
+                current_layer = status.get('currentLayer', 1)
+                total_layer = status.get('totalLayers', 1) if status.get('totalLayers', 1) else 1
+                pct = current_layer / total_layer
                 bar(pct)
                 if pct >= 1.0:
                     break
